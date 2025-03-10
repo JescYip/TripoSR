@@ -15,6 +15,11 @@ from tsr.utils import remove_background, resize_foreground, to_gradio_3d_orienta
 
 import argparse
 
+try:
+    import torchmcubes
+except ImportError:
+    os.system("pip install git+https://github.com/tatsy/torchmcubes.git")
+    import torchmcubes
 
 if torch.cuda.is_available():
     device = "cuda:0"
@@ -181,7 +186,7 @@ if __name__ == '__main__':
     interface.queue(max_size=args.queuesize)
     interface.launch(
         auth=(args.username, args.password) if (args.username and args.password) else None,
-        share=args.share,
+        share=True,
         server_name="0.0.0.0" if args.listen else None, 
         server_port=args.port
     )
